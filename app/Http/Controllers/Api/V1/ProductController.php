@@ -12,43 +12,61 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::all();
-        return ProductResource::collection($products);
-    }
-
+         // Indlæs alle produkter med deres relaterede productSeries og material
+         $products = Product::with(['productSeries', 'material', 'productImage', 'collections'])->get();
+         return response()->json(ProductResource::collection($products)->resolve());
+     }
+    
+    
     public function store(Request $request)
     {
+
         $validated = $request->validate([
-            'Name' => 'required|string|max:255',
-            'Description' => 'required|string|max:1000',
-            'Price' => 'required|numeric|min:0'
+            'product_series_id' => 'required|exists:product_series,id',
+            'material_id' => 'required|exists:materials,id',
+            'description' => 'required|string|max:1000',
+            'price' => 'required|numeric|min:0'
         ]);
 
+       
         $product = Product::create($validated);
-        return new ProductResource($product);
+        return response()->json(['product' => $product], 201);
     }
 
     public function show(Product $product)
     {
-        return new ProductResource($product);
+        $product->load(['productSeries', 'material', 'productImage', 'collections']);
+       
+        return response()->json(ProductResource::make($product)->resolve());
     }
 
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'Name' => 'sometimes|string|max:255',
-            'Description' => 'sometimes|string|max:1000',
-            'Price' => 'sometimes|numeric|min:0'
+            'product_series_id' => 'required|exists:product_series,id',
+            'material_id' => 'required|exists:materials,id',
+            'description' => 'required|string|max:1000',
+            'price' => 'required|numeric|min:0'
         ]);
 
         $product->update($validated);
 
-        return new ProductResource($product);
+        return ProductResource::make($product);
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
         return response()->json(['message' => 'Product deleted successfully'], 204);
+    }
+
+    public function getByProductSeries($productSeriesId)
+    {
+        
+        $products = Product::with(['productSeries', 'material', 'productImage', 'collections'])
+            ->where('product_series_id', $productSeriesId)
+            ->get();
+            
+        return response()->json(ProductResource::collection($products)->resolve());
     }
 }

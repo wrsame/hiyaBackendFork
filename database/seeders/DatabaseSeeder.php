@@ -18,23 +18,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $customer = Customer::factory()
-            ->hasOrders(3, [
-                'total' => 500.0,
-                'orderDate' => now(),
-            ])
-            ->create();
+        // $customer = Customer::factory()
+        //     ->hasOrders(3, [
+        //         'total' => 500.0,
+        //         'orderDate' => now(),
+        //     ])
+        //     ->create();
 
-        $orders = Order::factory(3)->create([
-            'customer_id' => $customer->id
-        ]);
+        // $orders = Order::factory(3)->create([
+        //     'customer_id' => $customer->id
+        // ]);
 
-        foreach ($orders as $order) {
-            OrderDetails::factory(2)->create([
-                'order_id' => $order->id,
-                'product_id' => Product::factory()->create()->id,
-            ]);
-        }
+        // foreach ($orders as $order) {
+        //     OrderDetails::factory(2)->create([
+        //         'order_id' => $order->id,
+        //         'product_id' => Product::factory()->create()->id,
+        //     ]);
+        // }
 
     }
 }
