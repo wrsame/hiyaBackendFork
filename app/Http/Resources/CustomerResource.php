@@ -22,7 +22,7 @@ class CustomerResource extends JsonResource
             'phone' => $this->phone,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            // You might not want to send password hash in API responses
+            
         ];
     }
 }

@@ -15,7 +15,7 @@ class InventoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'inventory_id' => $this->id,
+            'id' => $this->id,
             'product_id' => $this->product_id,
             'quantity' => $this->quantity,
             // Hvis du vil inkludere detaljeret produktinformation:

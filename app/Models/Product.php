@@ -9,7 +9,17 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price'];
+    protected $fillable = ['product_series_id', 'material_id', 'description', 'price'];
+
+    public function productSeries()
+    {
+        return $this->belongsTo(ProductSeries::class);
+    }
+
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
+    }
 
     public function orderDetails()
     {
@@ -24,6 +34,11 @@ class Product extends Model
     public function productCollection()
     {
         return $this->hasMany(ProductCollection::class);
+    }
+
+    public function collections()
+    {
+        return $this->belongsToMany(Collection::class, 'product_collections', 'product_id', 'collection_id');
     }
 
 }

@@ -12,8 +12,10 @@ class CollectionController extends Controller
 
     public function index()
     {
-        $collections = Collection::all();
-        return CollectionResource::collection($collections);
+        //
+        $collections = Collection::orderBy('name', 'asc')->get();
+        return response()->json(CollectionResource::collection($collections)->resolve());
+    
     }
 
     public function store(Request $request)
