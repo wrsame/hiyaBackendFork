@@ -11,8 +11,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('collections', function (Blueprint $table) {
-            $table->dropColumn('status');
-            $table->boolean('isActive')->default(true);
+            // Check if the column 'status' exists before attempting to drop it
+            if (Schema::hasColumn('collections', 'status')) {
+                $table->dropColumn('status');
+            }
+
+            // Check if the column 'isActive' does not exist before attempting to add it
+            if (!Schema::hasColumn('collections', 'isActive')) {
+                $table->boolean('isActive')->default(true);
+            }
         });
     }
 

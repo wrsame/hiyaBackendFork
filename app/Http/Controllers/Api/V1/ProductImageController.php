@@ -22,7 +22,6 @@ class ProductImageController extends Controller
 
     public function store(Request $request)
     {
-        Log::info('Request data:', $request->all());
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
             'imageURL' => 'required',

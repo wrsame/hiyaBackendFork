@@ -11,11 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('product_images', function (Blueprint $table) {
-            if (!Schema::hasColumn('product_images', 'is_primary')) {
-                $table->boolean('is_primary')->default(false);
-            }
-        });
+        DB::statement('ALTER TABLE orders AUTO_INCREMENT = 100000;');
     }
 
     /**
@@ -23,8 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('product_images', function (Blueprint $table) {
-            //
-        });
+        
     }
 };

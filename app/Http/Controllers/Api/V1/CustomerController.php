@@ -18,6 +18,24 @@ class CustomerController extends Controller
         return CustomerResource::collection(Customer::all());
     }
 
+
+    public function getOrderHistory($customerId)
+    {
+        $customer = Customer::with([
+            'orders' => function($query) {
+                $query->orderBy('created_at', 'desc'); // Sort orders by created_at in descending order
+            },
+            'orders.orderDetails.product.productImage',
+            'orders.address'
+        ])->find($customerId);
+
+        if (!$customer) {
+            return response()->json(['message' => 'Customer not found'], 404);
+        }
+
+        return response()->json($customer->orders);
+    }
+
     public function store(StoreCustomerRequest $request)
     {
         $validated = $request->validated();

@@ -18,9 +18,7 @@ class ProductSeriesController extends Controller
         return response()->json(ProductSeriesResource::collection($productSeries)->resolve());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -32,17 +30,12 @@ class ProductSeriesController extends Controller
         return response()->json(['id' => $productSeries->id], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(ProductSeries $productSeries)
     {
         return ProductSeriesResource::make($productSeries);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, ProductSeries $productSeries)
     {
         $validated = $request->validate([

@@ -19,16 +19,17 @@ class AddressController extends Controller
     {
         $validated = $request->validate([
             'customer_id' => 'required|exists:customers,id',
+            'name' => 'required|string',
             'street' => 'required|string',
             'city' => 'required|string',
             'region' => 'nullable|string',
             'postalcode' => 'required|string',
-            'country' => 'required|string'
+            'country' => 'required|string',
         ]);
 
         $address = Address::create($validated);
-
-        return AddressResource::make($address);
+        
+        return response()->json(['id' => $address->id], 201);
     }
 
 
@@ -42,11 +43,12 @@ class AddressController extends Controller
     {
         $validated = $request->validate([
             'customer_id' => 'required|exists:customers,id',
+            'name' => 'required|string',
             'street' => 'required|string',
             'city' => 'required|string',
             'region' => 'nullable|string',
             'postalcode' => 'required|string',
-            'country' => 'required|string'
+            'country' => 'required|string',
         ]);
 
         $address = update($validated);

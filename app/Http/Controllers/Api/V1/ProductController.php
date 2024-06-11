@@ -12,10 +12,19 @@ class ProductController extends Controller
 
     public function index()
     {
-         // Indlæs alle produkter med deres relaterede productSeries og material
+         // Indlæs alle produkter med deres relaterede productSeries og material og collections
          $products = Product::with(['productSeries', 'material', 'productImage', 'collections'])->get();
          return response()->json(ProductResource::collection($products)->resolve());
      }
+
+     public function limitedProducts($count)
+    {
+        $products = Product::with(['productSeries', 'material', 'productImage', 'collections'])
+        ->inRandomOrder()
+        ->take($count)
+        ->get();
+    return response()->json(ProductResource::collection($products)->resolve());
+}
     
     
     public function store(Request $request)

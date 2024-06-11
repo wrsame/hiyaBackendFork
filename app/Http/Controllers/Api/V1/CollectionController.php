@@ -18,6 +18,12 @@ class CollectionController extends Controller
     
     }
 
+    public function latestCollections($count)
+    {
+        $collections = Collection::orderBy('created_at', 'desc')->take($count)->get();
+        return response()->json(CollectionResource::collection($collections)->resolve());
+    }
+
     public function store(Request $request)
     {
         $validator =  $request->validate([
