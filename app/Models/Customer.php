@@ -3,27 +3,31 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Customer extends Model
+class Customer extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
-
-    //mass assignement, så behøver vi ikke at definere hver attribut alene
+    // Mass assignment, så behøver vi ikke at definere hver attribut alene
     protected $fillable = [
         'firstName', 'lastName', 'email', 'password', 'phone'
+    ];
+
+    // Skjule password attributen
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     public function orders()
     {
         return $this->hasMany(Order::class);
-
     }
 
     public function address()
     {
         return $this->hasMany(Address::class);
-
     }
 }
