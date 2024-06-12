@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Resources\OrderResource;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -19,16 +18,18 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+
         $validated = $request->validate([
-            'customer_id' => 'required|exists:customers,Customer_Id',
-            'orderDate' => 'required|date',
+            'customer_id' => 'required|exists:customers,id',
             'status' => 'required|string',
             'total' => 'required|numeric',
-            'productCount' => 'required|int'
+            'productCount' => 'required|int',
+            'address_id' => 'nullable|exists:addresses,id'
         ]);
 
         $order = Order::create($validated);
-        return OrderResource::make($order);
+       return response()->json(OrderResource::make($order)->resolve());
+      
     }
 
     public function show(Order $order)
@@ -39,11 +40,11 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'customer_id' => 'exists:customers,Customer_Id',
-            'orderDate' => 'date',
+            'Customer_id' => 'exists:customers,id',
             'status' => 'string',
             'total' => 'numeric',
-            'productCount' => 'int'
+            'productCount' => 'int',
+            'address_id' => 'nullable|exists:addresses,id'
         ]);
 
         $order->update($validated);

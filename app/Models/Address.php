@@ -9,12 +9,17 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'street', 'city', 'region', 'postalcode', 'country'];
+    protected $fillable = ['customer_id', 'name','street', 'city', 'region', 'postalcode', 'country'];
 
     
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
 }

@@ -9,18 +9,13 @@ use App\Http\Resources\InventoryResource;
 
 class InventoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $inventory = Inventory::with('product')->get();
         return InventoryResource::collection($inventory);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -33,17 +28,20 @@ class InventoryController extends Controller
         return InventoryResource::make($inventoryItem);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Inventory $inventory)
     {
         return InventoryResource::make($inventory);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function showByProductId($productId)
+    {
+        $inventory = Inventory::where('product_id', $productId)->firstOrFail();
+       
+        //return InventoryResource::make($inventory);
+        return  response()->json(InventoryResource::make($inventory)->resolve());
+    }
+
     public function update(Request $request, Inventory $inventory)
     {
         $validated = $request->validate([
@@ -55,11 +53,20 @@ class InventoryController extends Controller
 
         return InventoryResource::make($inventory);
     }
-    
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function updateByProductId(Request $request, $productId)
+    {
+        $validated = $request->validate([
+            'quantity' => 'required|integer|min:0'
+        ]);
+
+        $inventory = Inventory::where('product_id', $productId)->firstOrFail();
+        $inventory->update($validated);
+
+        return InventoryResource::make($inventory);
+    }
+
+    
     public function destroy(Inventory $inventory)
     {
         $inventory->delete();

@@ -9,7 +9,8 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'orderDate', 'status', 'total', 'productCount'];
+    protected $fillable = ['customer_id', 'status', 'total', 'productCount', 'address_id'];
+
 
 
     public function customer()
@@ -27,5 +28,9 @@ class Order extends Model
         return $this->hasMany(Shipement::class);
     }
     
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
 
 }
