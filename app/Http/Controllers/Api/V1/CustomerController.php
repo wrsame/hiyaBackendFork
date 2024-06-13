@@ -97,6 +97,7 @@ class CustomerController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'customer' => $customer,
         ]);
     }
 
@@ -117,6 +118,7 @@ class CustomerController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'customer' => $customer,
         ]);
     }
 }
