@@ -22,8 +22,18 @@ jobs:
         run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Upload Backend to Simply.com
-        uses: luketaes/ftp-deploy@v1.0.1
+        uses: mirromutth/ftp-deploy@v4.0.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /public_html/hiya/php/
+          exclude: |
+            .git*
+            .github/
+            node_modules/
+            vendor/
+            .env
+          timeout: 900s  # Forlæng timeout til 300 sekunder
+          protocol: ftps  # Brug FTPS hvis muligt
