@@ -11,21 +11,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Ensure this version supports Node.js 20
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3.6' # Rettet anførselstegn
+          php-version: '8.3.6'
 
       - name: Install Composer dependencies
         run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Upload Backend to Simply.com
-        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        uses: SamKirkland/FTP-Deploy-Action@5.0.0  
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
-          server-dir: /public_html/hiya/php
+          server-dir: /public_html/hiya/php/
