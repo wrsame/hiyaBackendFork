@@ -1,31 +1,31 @@
 name: Deploy Laravel Backend to Simply.com
 
 on:
-  push:
-    branches:
-      - master
+  push:
+    branches:
+      - master
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3.6'  # Korrigeret til at bruge enkelt anførselstegn
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3.6' # Rettet anførselstegn
 
-    - name: Install Composer dependencies
-      run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-    - name: Upload Backend to Simply.com
-      uses: SamKirkland/FTP-Deploy-Action@4.1.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./  # Dette refererer til roden af din repository, som indeholder alle dine Laravel filer
-        server-dir: /public_html/hiya/php  # Den mappe på din server, hvor Laravel filer skal uploades
+      - name: Upload Backend to Simply.com
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /public_html/hiya/php
