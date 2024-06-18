@@ -27,4 +27,4 @@ jobs:
           **/.git*
           **/.github*
           **/node_modules/**
-        timeout: 60000  # Øger timeout til 60 sekunder
+        timeout: 90000  # Øger timeout til 60 sekunder
