@@ -11,20 +11,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v4
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps  # eller ftp, afhængig af hvad din server understøtter
-        local-dir: ./  # Sti til dine lokale filer, f.eks. root af dit repository
-        server-dir: /public_html/hiya/php/  # Sti på serveren hvor filerne skal uploades
-        exclude: |
-          **/.git*
-          **/.github*
-          **/node_modules/**
-        timeout: 90000  # Øger timeout til 60 sekunder
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: 📂 Sync project files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps  # eller ftp, afhængig af hvad din server understøtter
+          local-dir: ./  # Sti til dine lokale filer, f.eks. root af dit repository
+          server-dir: /public_html/hiya/php/  # Sti på serveren hvor filerne skal uploades
+          exclude: |
+            **/.git*
+            **/.github*
+            **/node_modules/**
+            vendor/
+          timeout: 90000  # Øger timeout til 90 sekunder
+
+      - name: 📂 Sync vendor folder
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps  # eller ftp, afhængig af hvad din server understøtter
+          local-dir: ./vendor/  # Sti til vendor mappen
+          server-dir: /public_html/hiya/php/vendor/  # Sti på serveren til vendor mappen
+          exclude: |
+            **/.git*
+            **/.github*
+            **/node_modules/**
+          timeout: 90000  # Øger timeout til 90 sekunder
