@@ -3,7 +3,7 @@ name: Deploy Laravel Backend to Simply.com
 on:
   push:
     branches:
-      - master  # eller din primære branch
+      - master  
 
 jobs:
   deploy:
@@ -17,7 +17,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.3.6'  # Sørg for at bruge korrekt version
+        php-version: '8.3.6'  
 
     - name: Install Composer
       run: sudo apt-get install composer
@@ -31,9 +31,9 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps  # eller ftp, afhængig af hvad din server understøtter
-        local-dir: ./  # Sti til dine lokale filer, f.eks. root af dit repository
-        server-dir: /public_html/hiya/php/  # Sti på serveren hvor filerne skal uploades
+        protocol: ftps  
+        local-dir: ./  
+        server-dir: /public_html/hiya/php/  
         exclude: |
           **/.git*
           **/.github*
