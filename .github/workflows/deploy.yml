@@ -3,7 +3,7 @@ name: Deploy Laravel Backend to Simply.com
 on:
   push:
     branches:
-      - master  
+      - master
 
 jobs:
   deploy:
@@ -12,30 +12,19 @@ jobs:
 
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v2
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3.6'  
-
-    - name: Install Composer
-      run: sudo apt-get install composer
-
-    - name: Install Composer dependencies
-      run: composer install --no-dev --prefer-dist --optimize-autoloader
-
+      uses: actions/checkout@v4
+    
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps  
-        local-dir: ./  
-        server-dir: /public_html/hiya/php/  
+        protocol: ftps 
+        local-dir: ./ 
+        server-dir: /public_html/hiya/php/
         exclude: |
           **/.git*
           **/.github*
           **/node_modules/**
-        timeout: 60000  # Øger timeout til 60 sekunder
+        timeout: 60000 
